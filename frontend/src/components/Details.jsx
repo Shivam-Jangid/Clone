@@ -71,7 +71,6 @@ export default function Details() {
                 }
               );
               console.log(response.data, response.status);
-            //   localStorage.setItem("token", response.data.token);
             alert("user has been successfully created please sign in");
               navigate("/signin");
             } catch (err) {
