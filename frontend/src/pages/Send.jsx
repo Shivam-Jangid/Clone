@@ -46,25 +46,29 @@ function Button({label,amount,id}) {
   return (
     <button onClick={async ()=>{
       console.log(amount);
-      const response = await axios.post("http://localhost:3000/api/v1/accounts/transfer",{
-        to:id,
-        amount
-      },{
-        headers:{
-          Authorization:localStorage.getItem("token")
-        }
-      })
-      if(response.status == 200){
+      try{
+        const response = await axios.post("http://localhost:3000/api/v1/accounts/transfer",{
+          to:id,
+          amount
+        },{
+          headers:{
+            Authorization:localStorage.getItem("token")
+          }
+        })
         alert("Your transfer has been done successfully");
         navigate('/dashboard');
-        
       }
-     else if(response.status == 400){
-        alert("Insufficent balance")
+      catch(err){
+        console.log(err.response.status);
+        if(err.response.status === 400){
+          alert("Insufficient balance")
+        }
+        else {
+          alert("Some error occcurred , please try again later");
+          navigate('/dashboard');
+        }
       }
-      else {
-        alert("Some error occured , please go back to previous page");
-      }
-     }} class="h-12 w-1/2 mb-2 mt-5 text-slate-50 text-lg rounded-md transition-all ease-in-out  bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-blue-200 hover:text-xl hover:text-sky-950 duration-700">{label}</button>
+      
+     }} className="h-12 w-1/2 mb-2 mt-5 text-slate-50 text-lg rounded-md transition-all ease-in-out  bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-blue-200 hover:text-xl hover:text-sky-950 duration-700">{label}</button>
   )
 }

@@ -4,14 +4,11 @@ import Balance from "../components/Balance";
 import User from "../components/User";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 export default function Dashboard() {
   const navigate = useNavigate();
   const [balance, setBalance] = useState(0);
   useEffect(() => {
-    if(localStorage.getItem("token")) {
       const checkUser = async () => {
-      try {
         const response = await axios.get("http://localhost:3000/api/v1/user/me", {
           headers: { Authorization: localStorage.getItem("token") },
         });
@@ -21,18 +18,8 @@ export default function Dashboard() {
           });
           console.log(res.data.balance);
           setBalance(res.data.balance);
-      } catch (err) {
-        console.log(err);
-        alert("Some error occurred, please log in again.");
-        navigate('/signin');
-      }
     };
-    checkUser();
-  }
-    else{
-      alert("please sign in >>>>");
-      navigate("/signin");
-    }
+    checkUser(); 
   }, []);
 
   return (
